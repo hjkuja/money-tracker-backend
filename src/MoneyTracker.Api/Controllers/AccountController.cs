@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MoneyTracker.Api.Context;
 using MoneyTracker.Api.Models;
 using System.Net;
@@ -25,9 +26,9 @@ namespace MoneyTracker.Api.Controllers
         /// <param name="id">User's id.</param>
         /// <returns>User account.</returns>
         [HttpGet]
-        public ActionResult<AccountDTO> Get(int id)
+        public async Task<ActionResult<AccountDTO>> Get(int id)
         {
-            var account = _db.Accounts.FirstOrDefault(x => x.Id == id);
+            var account = await _db.Accounts.FirstOrDefaultAsync(x => x.Id == id);
 
             if (account == null) return NotFound("User not found.");
 
