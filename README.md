@@ -1,2 +1,3 @@
-# money-tracker-backend
+# Money tracker backend
+
 Backend for the money tracker app
