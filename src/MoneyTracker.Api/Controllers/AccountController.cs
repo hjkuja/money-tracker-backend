@@ -18,6 +18,7 @@ namespace MoneyTracker.Api.Controllers
         public AccountController(MoneyTrackerContext db)
         {
             _db = db;
+            _db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         /// <summary>
