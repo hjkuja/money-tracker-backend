@@ -1,35 +1,28 @@
-using Microsoft.EntityFrameworkCore;
-using MoneyTracker.Api.Context;
-using MoneyTracker.Api.Exceptions;
 using System.Reflection;
+using MoneyTracker.Application;
+using MoneyTracker.Application.Database;
+using static MoneyTracker.Api.Exceptions.CustomExceptions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllers();
 
 var connectionString = builder.Configuration["ConnectionString"];
 
 if (connectionString == null)
 {
-    throw new CustomExceptions.MissingConfigurationException("Database connection string is missing. Please add ConnectionString to correct appsettings.json");
+    throw new MissingConfigurationException("Database connection string is missing. Please add ConnectionString to correct appsettings.json");
 }
 
-// Add database context
-builder.Services.AddDbContext<MoneyTrackerContext>(
-    options => options
-        .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-        .LogTo(Console.WriteLine, LogLevel.Information)
-        .EnableSensitiveDataLogging()
-        .EnableDetailedErrors());
+builder.Services.AddDatabase(connectionString);
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddApplication();
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Version = "0.0.1",
+        Version = "0.1.0",
         Title = "Money Tracker API",
         Description = "This is an API for Money Tracker."
     });
@@ -58,5 +51,16 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+#if DEBUG
+
+// Since initializer is a scoped service, we need to create a scope to get it
+using var scope = app.Services.CreateScope();
+
+var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+await dbInitializer.InitializeAsync();
+
+#endif
+
 
 app.Run();
