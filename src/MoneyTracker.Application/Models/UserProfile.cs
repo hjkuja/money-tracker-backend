@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoneyTracker.Application.Models;
 
-public class UserAccount
+public class UserProfile
 {
-    public UserAccount(string name)
+    public UserProfile(string name)
     {
         Name = name;
     }
@@ -17,5 +17,5 @@ public class UserAccount
     [StringLength(100)]
     public string Name { get; set; }
 
-    public ICollection<Account> Accounts { get; } = [];
+    public ICollection<Account> Accounts { get; set; } = [];
 }

@@ -9,6 +9,6 @@ public class MoneyTrackerContext : DbContext
     {
     }
 
-    public DbSet<UserAccount> UserAccounts { get; set; }
-    public DbSet<Account> Account { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<Account> Accounts { get; set; }
 }

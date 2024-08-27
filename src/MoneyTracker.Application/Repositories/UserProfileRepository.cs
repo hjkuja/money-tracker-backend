@@ -5,23 +5,23 @@ using MoneyTracker.Application.Models;
 
 namespace MoneyTracker.Application.Repositories;
 
-internal class UserAccountRepository : IUserAccountRepository
+internal class UserProfileRepository : IUserProfileRepository
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
     //private readonly MoneyTrackerContext _context;
 
-    public UserAccountRepository(IServiceScopeFactory serviceScopeFactory)
+    public UserProfileRepository(IServiceScopeFactory serviceScopeFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
 
-    public async Task<UserAccount?> GetByIdAsync(Guid id, CancellationToken token = default)
+    public async Task<UserProfile?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<MoneyTrackerContext>();
 
-        var account = await db.UserAccounts
+        var account = await db.UserProfiles
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
 

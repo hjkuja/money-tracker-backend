@@ -4,13 +4,13 @@ using MoneyTracker.Contracts.Responses;
 namespace MoneyTracker.Api.Mappers;
 
 /// <summary>
-/// Contains mappers for <see cref="UserAccount"/>
+/// Contains mappers for <see cref="UserProfile"/>
 /// </summary>
-public static class UserAccountMapper
+public static class UserProfileMapper
 {
-    public static UserAccountResponse MapToResponse(this UserAccount account)
+    public static UserProfileResponse MapToResponse(this UserProfile account)
     {
-        return new UserAccountResponse
+        return new UserProfileResponse
         {
             Id = account.Id,
             Name = account.Name

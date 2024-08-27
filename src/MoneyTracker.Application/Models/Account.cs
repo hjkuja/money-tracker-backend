@@ -4,10 +4,25 @@ namespace MoneyTracker.Application.Models;
 
 public class Account
 {
+    public Account()
+    {
+
+    }
+
+    public Account(Guid ownerId, string accountName)
+    {
+        UserProfileId = ownerId;
+        Name = accountName;
+    }
+
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    public Guid UserAccountId { get; set; }
+    [Required]
+    public Guid UserProfileId { get; set; }
 
-    public UserAccount UserAccount { get; set; } = null!;
+    [Required]
+    public string Name { get; set; } = $"Account_{DateTime.UtcNow}";
+
+    public UserProfile UserProfile { get; set; } = null!;
 }

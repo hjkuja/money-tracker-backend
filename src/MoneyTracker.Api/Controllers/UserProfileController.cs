@@ -8,20 +8,20 @@ namespace MoneyTracker.Api.Controllers;
 
 [ApiController]
 [Produces("application/json")]
-public class UserAccountsController : ControllerBase
+public class UserProfileController : ControllerBase
 {
-    private readonly IAccountService _accountService;
+    private readonly IUserProfileService _userProfileService;
 
-    public UserAccountsController(IAccountService accountService)
+    public UserProfileController(IUserProfileService userProfileService)
     {
-        _accountService = accountService;
+        _userProfileService = userProfileService;
     }
 
-    [ProducesResponseType(typeof(UserAccountResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
     [HttpGet(ApiEndpoints.Account.Get)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var account = await _accountService.GetByIdAsync(id);
+        var account = await _userProfileService.GetByIdAsync(id);
 
         if (account is null) return NotFound();
 

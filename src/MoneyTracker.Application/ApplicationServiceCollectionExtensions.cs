@@ -18,8 +18,8 @@ public static class ApplicationServiceCollectionExtensions
     private static IServiceCollection AddAccountServices(this IServiceCollection services)
     {
         // TODO: Singletons cannot use scoped .AddDbContext service
-        services.AddSingleton<IUserAccountRepository, UserAccountRepository>();
-        services.AddSingleton<IAccountService, AccountService>();
+        services.AddSingleton<IUserProfileRepository, UserProfileRepository>();
+        services.AddSingleton<IUserProfileService, UserProfileService>();
         return services;
     }
 
