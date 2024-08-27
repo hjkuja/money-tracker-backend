@@ -18,7 +18,7 @@ public class UserProfileController : ControllerBase
     }
 
     [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
-    [HttpGet(ApiEndpoints.Account.Get)]
+    [HttpGet(ApiEndpoints.UserProfile.Get)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var account = await _userProfileService.GetByIdAsync(id);

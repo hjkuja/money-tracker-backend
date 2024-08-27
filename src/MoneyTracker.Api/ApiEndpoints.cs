@@ -2,9 +2,9 @@
 
 public class ApiEndpoints
 {
-    public static class Account
+    public static class UserProfile
     {
-        private const string Base = $"accounts";
+        private const string Base = $"users";
 
         public const string Get = $"{Base}/{{id}}";
     }
