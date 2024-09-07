@@ -17,7 +17,6 @@ public static class ApplicationServiceCollectionExtensions
 
     private static IServiceCollection AddAccountServices(this IServiceCollection services)
     {
-        // TODO: Singletons cannot use scoped .AddDbContext service
         services.AddSingleton<IUserProfileRepository, UserProfileRepository>();
         services.AddSingleton<IUserProfileService, UserProfileService>();
         return services;
@@ -31,7 +30,7 @@ public static class ApplicationServiceCollectionExtensions
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddDatabase(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<MoneyTrackerContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+        services.AddDbContext<MoneyTrackerContext>(options => options.UseNpgsql(connectionString));
 
 #if DEBUG
         services.AddTransient<DbInitializer>();

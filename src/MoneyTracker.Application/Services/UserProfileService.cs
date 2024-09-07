@@ -3,7 +3,7 @@ using MoneyTracker.Application.Repositories;
 
 namespace MoneyTracker.Application.Services;
 
-internal class UserProfileService : IUserProfileService
+public class UserProfileService : IUserProfileService
 {
 
     private readonly IUserProfileRepository _userProfileRepository;

@@ -2,7 +2,7 @@
 
 namespace MoneyTracker.Application.Repositories;
 
-internal interface IUserProfileRepository
+public interface IUserProfileRepository
 {
     Task<UserProfile?> GetByIdAsync(Guid id, CancellationToken token = default);
 }
