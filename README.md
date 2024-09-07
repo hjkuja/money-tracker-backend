@@ -13,7 +13,7 @@ Backend for the money tracker app
 Removing and creating container
 
 ```shell
-docker rm -f db && docker run -dit -e MARIADB_RANDOM_ROOT_PASSWORD=y -e MARIADB_DATABASE=moneytracker -e MARIADB_USER=dev -e MARIADB_PASSWORD=dev -p 3306:3306 --name db mariadb:11.5.2
+docker run -dit -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=moneytracker -p 5432:5432 --name db postgres:16.4
 ```
 
 Adding migrations:
