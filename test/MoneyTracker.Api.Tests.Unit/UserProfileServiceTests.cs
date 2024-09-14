@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using MoneyTracker.Application.Models;
-using MoneyTracker.Application.Repositories;
+using MoneyTracker.Application.Repositories.Interfaces;
 using MoneyTracker.Application.Services;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
@@ -36,7 +36,7 @@ public class UserProfileServiceTests
     }
 
     [Fact]
-    public async Task GetByIdAsync_ShouldReturnNull_WhenUserNotExists()
+    public async Task GetByIdAsync_ShouldReturnNull_WhenUserDoesntExist()
     {
         // Arrange
         var unexistingUserId = Guid.NewGuid();
@@ -48,4 +48,5 @@ public class UserProfileServiceTests
         // Assert
         result.Should().BeNull();
     }
+
 }
