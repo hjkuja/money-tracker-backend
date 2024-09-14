@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using MoneyTracker.Application.Database;
 using MoneyTracker.Application.Repositories;
+using MoneyTracker.Application.Repositories.Interfaces;
 using MoneyTracker.Application.Services;
+using MoneyTracker.Application.Services.Interfaces;
 
 namespace MoneyTracker.Application;
 
@@ -20,6 +22,11 @@ public static class ApplicationServiceCollectionExtensions
         // User
         services.AddSingleton<IUserProfileRepository, UserProfileRepository>();
         services.AddSingleton<IUserProfileService, UserProfileService>();
+
+        // Account
+        services.AddSingleton<IAccountRepository, AccountRepository>();
+        services.AddSingleton<IAccountService, AccountService>();
+
         return services;
     }
 
@@ -31,7 +38,13 @@ public static class ApplicationServiceCollectionExtensions
     /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddDatabase(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<MoneyTrackerContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContext<MoneyTrackerContext>(options =>
+        {
+            options.UseNpgsql(connectionString);
+#if DEBUG
+            options.EnableSensitiveDataLogging();
+#endif
+        });
 
 #if DEBUG
         services.AddTransient<DbInitializer>();

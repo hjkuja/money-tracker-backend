@@ -11,13 +11,15 @@ namespace MoneyTracker.Api.Controllers;
 public class UserProfileController : ControllerBase
 {
     private readonly IUserProfileService _userProfileService;
+    private readonly IAccountService _accountService;
 
-    public UserProfileController(IUserProfileService userProfileService)
+    public UserProfileController(IUserProfileService userProfileService, IAccountService accountService)
     {
         _userProfileService = userProfileService;
+        _accountService = accountService;
     }
 
-    [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
+    
     [HttpGet(ApiEndpoints.UserProfile.Get)]
     [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
@@ -29,8 +31,12 @@ public class UserProfileController : ControllerBase
         return Ok(userProfile.MapToResponse());
     }
 
-        if (account is null) return NotFound();
+    [HttpGet(ApiEndpoints.UserProfile.GetAccounts)]
+    [ProducesResponseType(typeof(List<AccountResponse>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetByUserId([FromRoute] Guid id)
+    {
+        var userAccounts = await _accountService.GetByUserIdAsync(id);
 
-        return Ok(account.MapToResponse());
+        return Ok(userAccounts.Select(x => x.MapToResponse()).ToList());
     }
 }

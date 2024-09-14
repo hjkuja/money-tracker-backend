@@ -4,9 +4,11 @@ namespace MoneyTracker.Application.Models;
 
 public class Account
 {
-    public Account()
-    {
+    public Account() { }
 
+    public Account(Guid ownerId)
+    {
+        UserProfileId = ownerId;
     }
 
     public Account(Guid ownerId, string accountName)
