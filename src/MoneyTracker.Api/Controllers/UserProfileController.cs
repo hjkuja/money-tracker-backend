@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneyTracker.Api.Mappers;
-using MoneyTracker.Application.Services;
+using MoneyTracker.Application.Services.Interfaces;
 using MoneyTracker.Contracts.Responses;
 using System.Net;
 
@@ -19,9 +19,15 @@ public class UserProfileController : ControllerBase
 
     [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
     [HttpGet(ApiEndpoints.UserProfile.Get)]
+    [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var account = await _userProfileService.GetByIdAsync(id);
+        var userProfile = await _userProfileService.GetByIdAsync(id);
+
+        if (userProfile is null) return NotFound();
+
+        return Ok(userProfile.MapToResponse());
+    }
 
         if (account is null) return NotFound();
 

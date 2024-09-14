@@ -17,6 +17,7 @@ public static class ApplicationServiceCollectionExtensions
 
     private static IServiceCollection AddAccountServices(this IServiceCollection services)
     {
+        // User
         services.AddSingleton<IUserProfileRepository, UserProfileRepository>();
         services.AddSingleton<IUserProfileService, UserProfileService>();
         return services;
