@@ -18,12 +18,12 @@ docker run -dit -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=mon
 
 Adding migrations:
 
-```
-dotnet ef migrations add -p ./src/MoneyTracker.Application/MoneyTracker.Application.csproj -s ./src/MoneyTracker.Api/MoneyTracker.Api.csproj Initial
+```shell
+dotnet ef migrations add -p ./src/MoneyTracker.Application/MoneyTracker.Application.csproj -s ./src/MoneyTracker.Api/MoneyTracker.Api.csproj DEVELOPMENT
 ```
 
 Running migrations:
 
-```
+```shell
 dotnet ef database update -p ./src/MoneyTracker.Application/MoneyTracker.Application.csproj -s ./src/MoneyTracker.Api/MoneyTracker.Api.csproj
 ```
