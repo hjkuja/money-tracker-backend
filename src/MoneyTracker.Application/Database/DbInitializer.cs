@@ -32,15 +32,15 @@ public class DbInitializer
     /// <returns></returns>
     private async Task<UserProfile> AddAdminProfileAsync()
     {
-        var adminProfile = _context.UserProfiles.AsNoTracking().FirstOrDefault(acc => acc.Id == _debugAdminProfileId);
+        _adminProfile = _context.UserProfiles.AsNoTracking().FirstOrDefault(acc => acc.Id == _debugAdminProfileId);
 
-        if (adminProfile != null) return adminProfile;
+        if (_adminProfile != null) return _adminProfile;
 
-        adminProfile = new UserProfile("Admin");
-        adminProfile.Id = _debugAdminProfileId;
+        _adminProfile = new UserProfile("Admin");
+        _adminProfile.Id = _debugAdminProfileId;
 
-        await _context.UserProfiles.AddAsync(adminProfile);
-        return adminProfile;
+        await _context.UserProfiles.AddAsync(_adminProfile);
+        return _adminProfile;
     }
 
     private async Task<List<Account>> AddAdminAccountsWithTransactionsAsync()
