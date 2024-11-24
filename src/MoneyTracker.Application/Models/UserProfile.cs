@@ -17,5 +17,7 @@ public class UserProfile
     [StringLength(100)]
     public string Name { get; set; }
 
-    public ICollection<Account> Accounts { get; set; } = [];
+    public DateTimeOffset CreatedAtUtc { get; init; } = DateTimeOffset.UtcNow;
+
+    public ICollection<Account> Accounts { get; set; } = new List<Account> { };
 }
