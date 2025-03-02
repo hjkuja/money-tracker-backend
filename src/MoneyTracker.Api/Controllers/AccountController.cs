@@ -16,6 +16,11 @@ public class AccountController : ControllerBase
         _accountService = accountService;
     }
 
+    /// <summary>
+    /// Gets an account by id.
+    /// </summary>
+    /// <param name="id">Account id.</param>
+    /// <returns><see cref="AccountResponse"/> object.</returns>
     [HttpGet(ApiEndpoints.Account.Get)]
     [ProducesResponseType(typeof(AccountResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get([FromRoute] Guid id)

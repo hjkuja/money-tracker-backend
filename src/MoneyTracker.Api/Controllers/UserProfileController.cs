@@ -19,7 +19,12 @@ public class UserProfileController : ControllerBase
         _accountService = accountService;
     }
 
-    
+
+    /// <summary>
+    /// Gets a user profile by id.
+    /// </summary>
+    /// <param name="id">User id.</param>
+    /// <returns><see cref="UserProfileResponse"/> if user is found. Otherwise not found.</returns>
     [HttpGet(ApiEndpoints.UserProfile.Get)]
     [ProducesResponseType(typeof(UserProfileResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
@@ -31,6 +36,11 @@ public class UserProfileController : ControllerBase
         return Ok(userProfile.MapToResponse());
     }
 
+    /// <summary>
+    /// Gets all accounts for a user.
+    /// </summary>
+    /// <param name="id">User's id.</param>
+    /// <returns>List of user's accounts.</returns>
     [HttpGet(ApiEndpoints.UserProfile.GetAccounts)]
     [ProducesResponseType(typeof(List<AccountResponse>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetByUserId([FromRoute] Guid id)
