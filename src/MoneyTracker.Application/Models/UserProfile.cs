@@ -17,7 +17,7 @@ public class UserProfile
     [StringLength(100)]
     public string Name { get; set; }
 
-    public DateTimeOffset CreatedAtUtc { get; init; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset CreatedAtUtc { get; init; } = DateTimeOffset.UtcNow.ToUniversalTime();
 
     public ICollection<Account> Accounts { get; set; } = new List<Account> { };
 }

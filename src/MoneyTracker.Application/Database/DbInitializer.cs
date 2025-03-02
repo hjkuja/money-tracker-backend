@@ -7,10 +7,55 @@ public class DbInitializer
 {
     private readonly MoneyTrackerContext _context;
 
-    private readonly Guid _debugAdminProfileId = Guid.Parse("8eebf12d-d332-11ee-9cdc-0242ac110002");
+    private static readonly Guid DebugAdminProfileId = Guid.Parse("8eebf12d-d332-11ee-9cdc-0242ac110002");
 
-    private UserProfile? _adminProfile  = null;
-    private List<Account> _adminAccounts = new List<Account>();
+    private UserProfile? _adminProfile;
+
+    private static readonly List<Transaction> CardTransactions = new()
+    {
+        new Transaction
+        {
+            Type = TransactionType.Add,
+            Amount = 100,
+            CreatedAtUtc = DateTimeOffset.UtcNow.AddDays(-10).ToUniversalTime()
+        },
+        new Transaction
+        {
+            Type = TransactionType.Remove,
+            Amount = 25,
+            CreatedAtUtc = DateTimeOffset.UtcNow.AddDays(-5).ToUniversalTime()
+        }
+    };
+
+    private static readonly List<Transaction> SavingsTransactions = new()
+    {
+        new Transaction
+        {
+            Type = TransactionType.Remove,
+            Amount = 100,
+            CreatedAtUtc = DateTimeOffset.UtcNow.AddDays(-15).ToUniversalTime()
+        },
+        new Transaction
+        {
+            Type = TransactionType.Add,
+            Amount = 80,
+            CreatedAtUtc = DateTimeOffset.UtcNow.AddDays(-10).ToUniversalTime()
+        }
+    };
+    
+    private readonly List<Account> _adminAccounts = new()
+    {
+        new Account(DebugAdminProfileId, "Card account")
+        {
+            Balance = 200 + CardTransactions.Sum(t => t.Amount),
+            Transactions = CardTransactions
+        },
+        new Account(DebugAdminProfileId, "Savings")
+        {
+            Balance = 6543.21M + SavingsTransactions.Sum(t => t.Amount),
+            Transactions = SavingsTransactions
+        }
+    };
 
     public DbInitializer(MoneyTrackerContext context)
     {
@@ -19,50 +64,43 @@ public class DbInitializer
 
     public async Task InitializeAsync()
     {
-
-        _adminProfile = await AddAdminProfileAsync();
-        _adminAccounts = await AddAdminAccountsWithTransactionsAsync();
-
+        await AddAdminProfileAsync();
         await _context.SaveChangesAsync();
     }
 
     /// <summary>
-    /// Adds admin user to database if not found
+    /// Adds admin user to database if not found.
     /// </summary>
-    /// <returns></returns>
-    private async Task<UserProfile> AddAdminProfileAsync()
+    private async Task AddAdminProfileAsync()
     {
-        _adminProfile = _context.UserProfiles.AsNoTracking().FirstOrDefault(acc => acc.Id == _debugAdminProfileId);
+        _adminProfile = _context.UserProfiles.AsNoTracking().FirstOrDefault(acc => acc.Id == DebugAdminProfileId);
 
-        if (_adminProfile != null) return _adminProfile;
-
-        _adminProfile = new UserProfile("Admin");
-        _adminProfile.Id = _debugAdminProfileId;
-
-        await _context.UserProfiles.AddAsync(_adminProfile);
-        return _adminProfile;
+        if (_adminProfile is null)
+        {
+            _adminProfile = new UserProfile("Admin")
+            {
+                Id = DebugAdminProfileId
+            };
+            
+            await _context.UserProfiles.AddAsync(_adminProfile);
+        };
+        
+        await AddAdminAccountsWithTransactionsAsync();
     }
 
-    private async Task<List<Account>> AddAdminAccountsWithTransactionsAsync()
+    /// <summary>
+    /// Adds accounts with some transactions to database.
+    /// </summary>
+    private async Task AddAdminAccountsWithTransactionsAsync()
     {
-        var adminAccounts = await _context.Accounts.AsNoTracking().Where(x => x.UserProfileId == _debugAdminProfileId).ToListAsync();
+        var adminAccounts = await _context.Accounts.AsNoTracking().Where(x => x.UserProfileId == DebugAdminProfileId).ToListAsync();
 
-        // If db already has some accounts, return them.
         if (adminAccounts.Count != 0)
         {
             _adminAccounts.AddRange(adminAccounts);
-            return adminAccounts;
+            return;
         }
-
-        // Otherwise, initialize test accounts
-
-        var accountList = new List<Account>()
-        {
-            new(_debugAdminProfileId, "Card account"),
-            new(_debugAdminProfileId, "Savings")
-        };
-
-        await _context.Accounts.AddRangeAsync(accountList);
-        return accountList;
+        
+        await _context.Accounts.AddRangeAsync(_adminAccounts);
     }
 }
