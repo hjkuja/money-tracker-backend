@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using MoneyTracker.Application.Models;
+﻿using MoneyTracker.Application.Models;
 using MoneyTracker.Application.Repositories.Interfaces;
 using MoneyTracker.Application.Services;
 using NSubstitute;
@@ -28,7 +27,7 @@ public class AccountServiceTests
         var result = await _sut.GetByIdAsync(existingAccount.Id);
 
         // Assert
-        result.Should().BeEquivalentTo(existingAccount);
+        Assert.Equal(existingAccount, result);
     }
 
     [Fact]
@@ -42,7 +41,7 @@ public class AccountServiceTests
         var result = await _sut.GetByIdAsync(unexistingAccountId);
 
         // Assert
-        result.Should().BeNull();
+        Assert.Null(result);
     }
 
     [Fact]
@@ -70,7 +69,7 @@ public class AccountServiceTests
         var result = await _sut.GetByUserIdAsync(user.Id);
 
         // Assert
-        result.Should().BeEquivalentTo(accountList);
+        Assert.Equal(accountList, result);
     }
 
     [Fact]
@@ -84,6 +83,6 @@ public class AccountServiceTests
         var result = await _sut.GetByUserIdAsync(unexistingAccountId);
 
         // Assert
-        result.Should().BeEmpty();
+        Assert.Empty(result);
     }
 }
