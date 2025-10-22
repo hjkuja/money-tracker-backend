@@ -23,6 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CA43819B-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.Api.Tests.Unit", "test\MoneyTracker.Api.Tests.Unit\MoneyTracker.Api.Tests.Unit.csproj", "{F7A7AE4B-0610-41D0-B33C-568ED6600249}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +59,7 @@ Global
 		{965A244E-CDA5-4D02-88A0-B90E78D5D469} = {ED676DD2-5D2C-4F0C-93EA-C547E0BAD0BB}
 		{D087CE91-3E04-446A-BC3E-6FCE76529BC2} = {ED676DD2-5D2C-4F0C-93EA-C547E0BAD0BB}
 		{F7A7AE4B-0610-41D0-B33C-568ED6600249} = {CA43819B-A632-4BE6-8059-BE4CAC79EA2D}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {5CB61470-DBCB-4AB4-9C0E-E407DCCA373D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC43F8BD-7EB4-4570-83D9-8BEA3C63389E}
