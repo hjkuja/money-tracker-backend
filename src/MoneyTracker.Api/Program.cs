@@ -1,6 +1,6 @@
-using System.Reflection;
 using MoneyTracker.Application;
 using MoneyTracker.Application.Database;
+using Scalar.AspNetCore;
 using static MoneyTracker.Api.Exceptions.CustomExceptions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,18 +18,8 @@ builder.Services.AddApplication();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Version = "0.1.0",
-        Title = "Money Tracker API",
-        Description = "This is an API for Money Tracker."
-    });
 
-    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
-});
+builder.Services.AddOpenApi();
 
 
 var app = builder.Build();
@@ -37,12 +27,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseStaticFiles();
-
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
     {
-        c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+        options.WithTitle("MoneyTracker");
     });
 }
 
