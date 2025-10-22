@@ -62,8 +62,14 @@ public class DbInitializer
         _context = context;
     }
 
+    /// <summary>
+    /// Initializes the database context.
+    /// </summary>
+    /// <returns>Task to initialize the database.</returns>
     public async Task InitializeAsync()
     {
+        await _context.Database.MigrateAsync();
+
         await AddAdminProfileAsync();
         await _context.SaveChangesAsync();
     }
