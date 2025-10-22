@@ -13,7 +13,7 @@ Backend for the money tracker app
 Removing and creating container
 
 ```shell
-docker run -dit -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=moneytracker -p 5432:5432 --name db postgres:17
+docker run -dit -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=moneytracker -p 127.0.0.1:5432:5432 --name db postgres:18
 ```
 
 Adding migrations:
