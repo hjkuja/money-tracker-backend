@@ -4,6 +4,8 @@ Backend for the money tracker app
 
 ## Development
 
+The API documentation is available at [https://localhost:5000/scalar](https://localhost:5000/scalar) when in debug mode.
+
 ### Configuration
 
 [Default appsettings.json](src/MoneyTracker.Api/appsettings.json)
