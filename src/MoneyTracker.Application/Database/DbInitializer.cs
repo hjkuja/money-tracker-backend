@@ -112,7 +112,7 @@ public class DbInitializer
         }
         finally
         {
-            conn.Dispose();
+            conn.Close();
         }
     }
 
