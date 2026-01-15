@@ -68,10 +68,52 @@ public class DbInitializer
     /// <returns>Task to initialize the database.</returns>
     public async Task InitializeAsync()
     {
+        await CheckEFMigrationsAsync();
         await _context.Database.MigrateAsync();
 
         await AddAdminProfileAsync();
         await _context.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Check and initialize EF migrations table if not found
+    /// </summary>
+    /// <returns>Task to check and initialize EF migrations table.</returns
+    private async Task CheckEFMigrationsAsync()
+    {
+        //DbConnection conn;
+        var conn = _context.Database.GetDbConnection();
+        try
+        {
+            if (conn is null)
+            {
+                throw new Exception("Failed to connect to DB");
+            }
+
+            if (conn.State is not System.Data.ConnectionState.Open)
+            {
+                conn.Open();
+            }
+
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '__EFMigrationsHistory');";
+            var exists = await cmd.ExecuteScalarAsync();
+
+            if (exists is true) return;
+
+            cmd.CommandText = "CREATE TABLE \"__EFMigrationsHistory\" (\"MigrationId\" character varying(150) NOT NULL, \"ProductVersion\" character varying(32) NOT NULL, CONSTRAINT \"PK___EFMigrationsHistory\" PRIMARY KEY (\"MigrationId\"));";
+            await cmd.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            // Because we're in development mode, just write the exception to console
+            Console.WriteLine(ex);
+            throw;
+        }
+        finally
+        {
+            conn.Dispose();
+        }
     }
 
     /// <summary>
