@@ -1,3 +1,4 @@
+using MoneyTracker.Api.Endpoints;
 using MoneyTracker.Application;
 using MoneyTracker.Application.Database;
 using Scalar.AspNetCore;
@@ -13,16 +14,12 @@ if (connectionString == null)
 }
 
 builder.Services.AddDatabase(connectionString);
-
+builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddOpenApi();
-
-
 var app = builder.Build();
+
+app.MapEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -32,13 +29,13 @@ if (app.Environment.IsDevelopment())
     {
         options.WithTitle("MoneyTracker");
     });
+} 
+else
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 #if DEBUG
 

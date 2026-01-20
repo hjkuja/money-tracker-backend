@@ -10,12 +10,16 @@ namespace MoneyTracker.Application;
 
 public static class ApplicationServiceCollectionExtensions
 {
+    /// <summary>
+    /// Adds the application services to the provided <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to modify.</param>
+    /// <returns>The <see cref="IServiceCollection"/> with the added services.</returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddAccountServices();
         return services;
     }
-
 
     private static IServiceCollection AddAccountServices(this IServiceCollection services)
     {
